@@ -176,7 +176,7 @@
           };
         case "adresse":
           return {
-            text: "Nous sommes situés à Almadies 2, en face de la station Shell, Dakar.",
+            text: "Nous sommes situés aux Almadies 2, en face de la station Shell, Rufisque, Dakar.",
             cta: { label: "Voir l'itinéraire →", href: "contact.html#carte" }
           };
         case "rdv":
