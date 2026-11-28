@@ -88,3 +88,31 @@ test('all HTML pages include local SEO metadata, social cards, and valid JSON-LD
     }
   });
 });
+
+test('buildStaticSite produces clean dist/ matching vercel.json without server files', async () => {
+  const { existsSync, readFileSync } = await import('node:fs');
+  const path = await import('node:path');
+  const { buildStaticSite } = await import('./build.mjs');
+
+  const distDir = buildStaticSite();
+  const vercelCfg = JSON.parse(readFileSync(path.resolve('vercel.json'), 'utf8'));
+  assert.equal(vercelCfg.outputDirectory, 'dist');
+  assert.equal(vercelCfg.buildCommand, 'npm run build');
+
+  for (const required of [
+    'index.html',
+    'a-propos.html',
+    'services.html',
+    'contact.html',
+    'robots.txt',
+    'sitemap.xml',
+    'assets/css/style.css',
+    'assets/js/main.js',
+  ]) {
+    assert.ok(existsSync(path.join(distDir, required)), `Missing ${required} in dist/`);
+  }
+
+  for (const forbidden of ['server.js', 'package.json', 'metadata.json', 'build.mjs']) {
+    assert.ok(!existsSync(path.join(distDir, forbidden)), `Unexpected ${forbidden} leaked into dist/`);
+  }
+});

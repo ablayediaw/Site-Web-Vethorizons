@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "node --check server.js && node --check assets/js/main.js",
-    "lint": "node --check server.js && node --check assets/js/main.js",
+    "build": "node build.mjs",
+    "lint": "node --check build.mjs && node --check server.js && node --check assets/js/main.js",
     "test": "node --test server.test.mjs"
   },
   "dependencies": {
